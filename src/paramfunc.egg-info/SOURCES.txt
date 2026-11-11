@@ -1,0 +1,9 @@
+LICENSE.txt
+README.md
+pyproject.toml
+src/__init__.py
+src/paramfunc.py
+src/paramfunc.egg-info/PKG-INFO
+src/paramfunc.egg-info/SOURCES.txt
+src/paramfunc.egg-info/dependency_links.txt
+src/paramfunc.egg-info/top_level.txt

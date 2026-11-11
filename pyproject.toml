@@ -1,0 +1,22 @@
+[build-system]
+requires = ["setuptools >= 77.0.3"]
+build-backend = "setuptools.build_meta"
+[project]
+name = "paramfunc"
+version = "0.0.1"
+authors = [
+  { name="light.seeker", email="light.the.seeker@gmail.com" },
+]
+description = "Decorator and class for easy argument conversion and validation."
+readme = "README.md"
+requires-python = ">=3.9"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Operating System :: OS Independent",
+]
+license = "MIT"
+license-files = ["LICEN[CS]E*"]
+
+[project.urls]
+Homepage = "https://pypi.org/project/paramfunc/"
+Repository = "https://github.com/Lightseeker7/paramfunc"

@@ -1,0 +1,79 @@
+Metadata-Version: 2.4
+Name: paramfunc
+Version: 0.0.1
+Summary: Decorator and class for easy argument conversion and validation.
+Author-email: "light.seeker" <light.the.seeker@gmail.com>
+License-Expression: MIT
+Project-URL: Homepage, https://pypi.org/project/paramfunc/
+Project-URL: Repository, https://github.com/Lightseeker7/paramfunc
+Classifier: Programming Language :: Python :: 3
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.9
+Description-Content-Type: text/markdown
+License-File: LICENSE.txt
+Dynamic: license-file
+
+# paramfunc
+Decorator and class for easy argument conversion and validation..
+
+Github: [link](https://github.com/Lightseeker7/paramfunc)
+
+Project: [link](https://pypi.org/project/paramfunc/)
+
+# @parameterize
+The function decorator takes up to two arguments, `params` and `kwparams`, and converts the function into a callable `ParamFunc` object. This `ParamFunc` object can be called as a normal function can, only it will first convert the arguments and check them against any related parameters.
+
+Formatted as follows:
+```
+@parameterize(params=<params>,kwparams=<kwparams>)
+def my_func(arg1,arg2):
+    return arg1 + arg2
+```
+In the event a converted argument does not satisfy a parameter, it will throw an error. Any errors involved with converting the argument will also occur, where applicable.
+## params
+Set to `None` if none are given.
+
+`params` is used for all positional-only arguments, what would be called with `*args`
+
+The format for `params` is a `dict` object formatted like the following:
+```
+{"convert":convert,"params":[boolean functions]}
+```
+An example of a `params` argument that converts all input items in `*args` to `int` objects and checks if they are even and not negative:
+```
+{"convert":int,"params":[lambda x:x>=0,lambda x:x%2==0]}
+```
+## kwparams
+Set to `None` if none are given.
+
+`kwparams` is used for all other arguments, whether they are keyword-only or positional with a keyword.
+
+The format for `kwparams` is a `dict` object formatted like the following:
+```
+{"keyword1":{"convert":convert,"params":[boolean functions]},"keyword2":{"convert":convert,"params":[boolean functions]}}
+```
+An example of a `kwparams` argument that checks if the `"file"` argument is a .txt file and the `"contents"` is a list of strings:
+```
+{"file":{"convert":str,"params":[lambda x:x[-4:]==".txt",lambda x:len(x)>=5]},"contents":{"convert":list,"params":[lambda x:all(isinstance(item,str) for item in x)]}}
+```
+If a keyword argument has no need for conversion or for checking against a variable, it can be omitted from `kwparams`.
+## "convert"
+`"convert"` can be a `type` object such as `int` or `str`, or it can be any function that takes the related argument and returns a value. This can be a `lambda` or a function defined elsewhere in the program. If no change should happen to the related argument(s), but there still needs to be `"params"` for it, it should be set to the following:
+```
+"convert":lambda x:x
+```
+## "params"
+`"params"` is a list of functions that all must return boolean values. These can be `lambda` functions or functions defined elsewhere in the program. If no parameters are needed for the argument, but it needs to be converted with `"convert"`, it should just be set to an empty list:
+```
+"params":[]
+```
+# ParamFunc
+`@paramterize` converts the function it is decorating into a `ParamFunc` object. This object has three instance variables:
+
+`func`: the function that was decorated
+
+`params`: the input `params` argument in the decoration, `None` if none was given.
+
+`kwparams`: the input `kwparams` argument in the decoration, `None` if none was given. 
+
+The `ParamFunc` object can be called as a function. It will take the arguments given it, convert them using the related `"convert"` functions, and check them against any related `"params"` functions with `assert param(converted_argument)`.
